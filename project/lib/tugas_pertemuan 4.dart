@@ -31,15 +31,52 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _login() {
-    if (_usernameController.text == "Regita" && _passwordController.text == "123") {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => DashboardPage(username: _usernameController.text, onLogout: _logout)),
-      );
+  void _login() async {
+    // Metode untuk menangani proses login
+    const String apiUrl =
+        "http://10.0.2.2/mwsp/login.php"; // URL endpoint API login
+
+    final response = await http.post(
+      // Mengirim permintaan POST ke API
+      Uri.parse(apiUrl),
+      headers: <String, String>{
+        'Content-Type':
+            'application/json; charset=UTF-8', // Menetapkan header Content-Type
+      },
+      body: jsonEncode(<String, String>{
+        // Mengonversi data input menjadi format JSON
+        'username': _usernameController.text,
+        'password': _passwordController.text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      // Memeriksa apakah respons berhasil
+      final Map<String, dynamic> responseData =
+          json.decode(response.body); // Mengurai respons JSON
+
+      if (responseData['status'] == 'success') {
+        // Jika login berhasil
+        Navigator.push(
+            // Mendorong halaman DashboardPage ke tumpukan navigasi
+            context,
+            MaterialPageRoute(
+              builder: (context) => DashboardPage(
+                  username: _usernameController.text, onLogout: _logout),
+            ));
+      } else {
+        // Jika login gagal
+        ScaffoldMessenger.of(context).showSnackBar(
+          // Menampilkan pesan kesalahan
+          SnackBar(content: Text(responseData['message'])),
+        );
+      }
     } else {
+      // Jika status kode bukan 200
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Username atau password yang kamu masukkan salah, silahkan coba lagi!')),
+        const SnackBar(
+            content: Text(
+                'Terjadi kesalahan pada server!')), // Menampilkan pesan kesalahan server
       );
     }
   }
