@@ -1,35 +1,45 @@
-import 'package:flutter/material.dart';
+import 'dart:convert'; // Mengimpor pustaka untuk bekerja dengan JSON
+import 'package:http/http.dart'
+    as http; // Mengimpor paket http untuk melakukan permintaan HTTP
+import 'package:flutter/material.dart'; // Mengimpor paket Flutter untuk membangun antarmuka pengguna
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+      const MyApp()); // Menjalankan aplikasi dengan widget MyApp sebagai root
 }
 
 class MyApp extends StatelessWidget {
+  // Kelas MyApp adalah widget Stateless yang menjadi root aplikasi
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Metode ini membangun antarmuka pengguna
     return MaterialApp(
-      title: 'Login Navigation',
+      title: 'Login Navigation', // Judul aplikasi
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.purple, // Skema warna utama aplikasi
       ),
-      debugShowCheckedModeBanner: false,
-      home: const LoginPage(),
+      debugShowCheckedModeBanner: false, // Menonaktifkan banner debug
+      home: const LoginPage(), // Menetapkan halaman awal aplikasi ke LoginPage
     );
   }
 }
 
 class LoginPage extends StatefulWidget {
-  const LoginPage ({super.key});
+  // Kelas LoginPage adalah widget Stateful untuk menangani status
+  const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginPage> createState() =>
+      _LoginPageState(); // Mengembalikan instance dari _LoginPageState
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController =
+      TextEditingController(); // Mengontrol input username
+  final TextEditingController _passwordController =
+      TextEditingController(); // Mengontrol input password
 
   void _login() async {
     // Metode untuk menangani proses login
@@ -82,34 +92,40 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _logout() {
-    // Reset nama pengguna dan kata sandi saat logout
-    _usernameController.clear();
-    _passwordController.clear();
+    // Metode untuk menangani proses logout
+    _usernameController.clear(); // Menghapus input username
+    _passwordController.clear(); // Menghapus input password
 
-    // Kembali ke login page
-    Navigator.pop(context);
+    Navigator.pop(context); // Kembali ke halaman login
   }
 
   @override
   Widget build(BuildContext context) {
+    // Metode untuk membangun tampilan halaman login
     return Scaffold(
-      appBar: AppBar(toolbarHeight: 10),
+      appBar: AppBar(toolbarHeight: 10), // Membuat AppBar dengan tinggi 10
       body: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: SingleChildScrollView( // Menggunakan SingleChildScrollView
+        padding: const EdgeInsets.all(
+            30.0), // Menetapkan padding di sekitar isi halaman
+        child: SingleChildScrollView(
+          // Memungkinkan scroll jika konten melebihi ukuran layar
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment
+                .center, // Mengatur konten agar berada di tengah
             children: [
               SizedBox(
                 height: 300,
-                child: Image.asset('assets/images/logo.png', fit: BoxFit.contain),
+                child: Image.asset('assets/images/logo.png',
+                    fit: BoxFit.contain), // Menampilkan logo aplikasi
               ),
               // Teks Login
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Login',
-                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold), // Mengatur gaya teks login
                 ),
               ),
               const SizedBox(height: 10),
@@ -117,13 +133,16 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 width: double.infinity,
                 child: TextField(
-                  controller: _usernameController,
+                  controller:
+                      _usernameController, // Menghubungkan TextField dengan controller username
                   decoration: const InputDecoration(
-                    labelText: 'Username',
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                    labelText: 'Username', // Label untuk input username
+                    border: OutlineInputBorder(), // Border untuk TextField
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 16), // Padding di dalam TextField
                   ),
-                  style: const TextStyle(fontSize: 20), // Memperbesar teks
+                  style: const TextStyle(fontSize: 20), // Mengatur ukuran teks
                 ),
               ),
               const SizedBox(height: 20),
@@ -132,14 +151,17 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 width: double.infinity,
                 child: TextField(
-                  controller: _passwordController,
-                  obscureText: true,
+                  controller:
+                      _passwordController, // Menghubungkan TextField dengan controller password
+                  obscureText: true, // Mengaburkan teks untuk keamanan
                   decoration: const InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                    labelText: 'Password', // Label untuk input password
+                    border: OutlineInputBorder(), // Border untuk TextField
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 16), // Padding di dalam TextField
                   ),
-                  style: const TextStyle(fontSize: 20), // Memperbesar teks
+                  style: const TextStyle(fontSize: 20), // Mengatur ukuran teks
                 ),
               ),
               // "Forgot Password" di sebelah kanan dengan warna biru
@@ -148,11 +170,13 @@ class _LoginPageState extends State<LoginPage> {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {
-                    // Forgot password action
+                    // Forgot password action (tindakan ketika "lupa kata sandi" ditekan)
                   },
                   child: const Text(
                     'Forgot Password?',
-                    style: TextStyle(color: Colors.blue, fontSize: 20), // Mengubah warna menjadi biru
+                    style: TextStyle(
+                        color: Colors.blue, // Mengubah warna menjadi biru
+                        fontSize: 20), // Mengatur ukuran teks
                   ),
                 ),
               ),
@@ -160,17 +184,19 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 15),
               SizedBox(
                 width: 250, // Panjang tombol sesuai keinginan
-                height: 50,  // Tinggi tombol tetap 50
+                height: 50, // Tinggi tombol tetap 50
                 child: ElevatedButton(
-                  onPressed: _login,
+                  onPressed:
+                      _login, // Memanggil fungsi _login saat tombol ditekan
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red, // Mengubah warna tombol menjadi kuning
+                    backgroundColor:
+                        Colors.red, // Mengubah warna tombol menjadi merah
                   ),
                   child: const Text(
                     'Login',
                     style: TextStyle(
-                      color: Colors.white, // Warna teks menjadi hitam
-                      fontWeight: FontWeight.bold,
+                      color: Colors.white, // Warna teks menjadi putih
+                      fontWeight: FontWeight.bold, // Mengatur bobot teks
                       fontSize: 20,
                     ),
                   ),
@@ -182,11 +208,13 @@ class _LoginPageState extends State<LoginPage> {
               // Tombol Register dengan warna biru
               TextButton(
                 onPressed: () {
-                  // Register action
+                  // Register action (tindakan ketika tombol register ditekan)
                 },
                 child: const Text(
                   'Register',
-                  style: TextStyle(color: Colors.blue, fontSize: 20), // Mengubah warna menjadi biru
+                  style: TextStyle(
+                      color: Colors.blue, // Mengubah warna menjadi biru
+                      fontSize: 20), // Mengatur ukuran teks
                 ),
               ),
             ],
@@ -198,59 +226,75 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 class DashboardPage extends StatelessWidget {
-  final String username;
-  final VoidCallback onLogout; // Callback for logout
+  // Kelas DashboardPage adalah widget Stateless untuk menampilkan halaman dashboard
+  final String username; // Variabel untuk menyimpan nama pengguna
+  final VoidCallback onLogout; // Callback untuk logout
 
-  const DashboardPage({required this.username, required this.onLogout, super.key});
+  const DashboardPage(
+      {required this.username, required this.onLogout, super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Metode untuk membangun tampilan halaman dashboard
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 15,
-        automaticallyImplyLeading: false,
+        toolbarHeight: 15, // Mengatur tinggi toolbar
+        automaticallyImplyLeading:
+            false, // Menonaktifkan navigasi kembali di AppBar
       ),
-      body: SingleChildScrollView( // Menambahkan SingleChildScrollView
+      body: SingleChildScrollView(
+        // Memungkinkan scroll jika konten melebihi ukuran layar
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(
+              16.0), // Menetapkan padding di sekitar isi halaman
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment:
+                CrossAxisAlignment.start, // Mengatur alignment konten ke kiri
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment
+                    .spaceBetween, // Mengatur jarak antar elemen dalam baris
                 children: [
                   Row(
                     children: [
                       const CircleAvatar(
-                        radius: 30,
-                        child: Icon(Icons.person, size: 40),
+                        // Menampilkan avatar bulat
+                        radius: 30, // Mengatur radius avatar
+                        child: Icon(Icons.person, size: 40), // Menampilkan ikon
                       ),
-                      const SizedBox(width: 15),
+                      const SizedBox(width: 15), // Jarak antara avatar dan teks
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment
+                            .start, // Mengatur alignment kolom ke kiri
                         children: [
                           Text(
-                            'Halo, $username',
-                            style: const TextStyle(fontSize: 18),
+                            'Halo, $username', // Menampilkan pesan sambutan dengan nama pengguna
+                            style: const TextStyle(
+                                fontSize: 18), // Mengatur ukuran teks
                           ),
                           const Text(
-                            'Itadakimasu.',
-                            style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+                            'Itadakimasu.', // Menampilkan teks tambahan
+                            style: TextStyle(
+                                fontSize: 23,
+                                fontWeight: FontWeight
+                                    .bold), // Mengatur ukuran dan bobot teks
                           ),
                         ],
                       ),
                     ],
                   ),
                   ElevatedButton(
-                    onPressed: onLogout, // Perform logout
+                    onPressed:
+                        onLogout, // Memanggil fungsi onLogout saat tombol ditekan
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
+                      backgroundColor:
+                          Colors.red, // Mengubah warna tombol menjadi merah
                     ),
                     child: const Text(
-                      'Log out',
+                      'Log out', // Teks tombol logout
                       style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                        color: Colors.white, // Warna teks menjadi putih
+                        fontWeight: FontWeight.bold, // Mengatur bobot teks
                         fontSize: 20,
                       ),
                     ),
@@ -261,7 +305,10 @@ class DashboardPage extends StatelessWidget {
 
               // Centering kedai.png
               Center(
-                child: Image.asset('assets/images/kedai.png', height: 260, fit: BoxFit.fill),
+                child: Image.asset(
+                    'assets/images/kedai.png', // Menampilkan gambar kedai
+                    height: 260,
+                    fit: BoxFit.fill),
               ),
 
               const SizedBox(height: 20),
@@ -272,7 +319,8 @@ class DashboardPage extends StatelessWidget {
                   '-- Our Menu --',
                   style: TextStyle(
                     fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                    fontWeight:
+                        FontWeight.bold, // Mengatur ukuran dan bobot teks
                   ),
                 ),
               ),
@@ -284,14 +332,22 @@ class DashboardPage extends StatelessWidget {
                   SizedBox(
                     width: 130,
                     height: 130,
-                    child: Image.asset('assets/images/udon.png', fit: BoxFit.cover),
+                    child: Image.asset(
+                        'assets/images/udon.png', // Menampilkan gambar ramen udon
+                        fit: BoxFit.cover),
                   ),
                   const SizedBox(width: 30),
                   const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment
+                        .start, // Mengatur alignment kolom ke kiri
                     children: [
-                      Text('Ramen Udon', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                      Text('Rp34.000', style: TextStyle(fontSize: 20)),
+                      Text('Ramen Udon',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight:
+                                  FontWeight.bold)), // Menampilkan nama menu
+                      Text('Rp34.000',
+                          style: TextStyle(fontSize: 20)), // Menampilkan harga
                     ],
                   ),
                 ],
@@ -304,14 +360,22 @@ class DashboardPage extends StatelessWidget {
                   SizedBox(
                     width: 130,
                     height: 130,
-                    child: Image.asset('assets/images/kurume.png', fit: BoxFit.cover),
+                    child: Image.asset(
+                        'assets/images/kurume.png', // Menampilkan gambar ramen kurume
+                        fit: BoxFit.cover),
                   ),
                   const SizedBox(width: 30),
                   const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment
+                        .start, // Mengatur alignment kolom ke kiri
                     children: [
-                      Text('Kurume Ramen', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                      Text('Rp45.000', style: TextStyle(fontSize: 20)),
+                      Text('Kurume Ramen',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight:
+                                  FontWeight.bold)), // Menampilkan nama menu
+                      Text('Rp45.000',
+                          style: TextStyle(fontSize: 20)), // Menampilkan harga
                     ],
                   ),
                 ],
@@ -324,14 +388,22 @@ class DashboardPage extends StatelessWidget {
                   SizedBox(
                     width: 130,
                     height: 130,
-                    child: Image.asset('assets/images/shoyu.png', fit: BoxFit.cover),
+                    child: Image.asset(
+                        'assets/images/shoyu.png', // Menampilkan gambar ramen shoyu
+                        fit: BoxFit.cover),
                   ),
                   const SizedBox(width: 30),
                   const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment
+                        .start, // Mengatur alignment kolom ke kiri
                     children: [
-                      Text('Shoyu Ramen', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                      Text('Rp48.500', style: TextStyle(fontSize: 20)),
+                      Text('Shoyu Ramen',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight:
+                                  FontWeight.bold)), // Menampilkan nama menu
+                      Text('Rp48.500',
+                          style: TextStyle(fontSize: 20)), // Menampilkan harga
                     ],
                   ),
                 ],
@@ -343,14 +415,22 @@ class DashboardPage extends StatelessWidget {
                   SizedBox(
                     width: 130,
                     height: 130,
-                    child: Image.asset('assets/images/spicy.png', fit: BoxFit.cover),
+                    child: Image.asset(
+                        'assets/images/spicy.png', // Menampilkan gambar ramen pedas
+                        fit: BoxFit.cover),
                   ),
                   const SizedBox(width: 30),
                   const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment
+                        .start, // Mengatur alignment kolom ke kiri
                     children: [
-                      Text('Spicy Ramen', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                      Text('Rp50.000', style: TextStyle(fontSize: 20)),
+                      Text('Spicy Ramen',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight:
+                                  FontWeight.bold)), // Menampilkan nama menu
+                      Text('Rp50.000',
+                          style: TextStyle(fontSize: 20)), // Menampilkan harga
                     ],
                   ),
                 ],
